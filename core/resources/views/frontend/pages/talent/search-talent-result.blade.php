@@ -1,0 +1,59 @@
+<div class="shop-contents-wrapper-right">
+    <div class="row g-4">
+            <div class="col-lg-12">
+                <div class="categoryWrap-wrapper-item">
+                    <div class="row g-4">
+                        @foreach ($talents as $talent)
+                            <div class="col-xxl-4 col-md-6">
+                                <div class="single-freelancer center-text radius-20">
+                                    <div class="single-freelancer-author">
+                                        <div class="single-freelancer-author-thumb mb-2">
+                                            @if ($talent->image)
+                                                <a href="{{ route('freelancer.profile.details', $talent->username) }}">
+                                                    <img src="{{ asset('assets/uploads/profile/' . $talent->image) }}"
+                                                         alt="{{ $talent->first_name }}">
+                                                </a>
+                                                @if(moduleExists('FreelancerLevel'))
+                                                    <div class="freelancer-level-badge">
+                                                        {!! freelancer_level($talent->id,'talent') ?? '' !!}
+                                                    </div>
+                                                @endif
+                                            @else
+                                                <a href="{{ route('freelancer.profile.details', $talent->username) }}">
+                                                    <img src="{{ asset('assets/static/img/author/author.jpg') }}"
+                                                         alt="{{ __('AuthorImg') }}">
+                                                </a>
+                                                @if(moduleExists('FreelancerLevel'))
+                                                    <div class="freelancer-level-badge">
+                                                        {!! freelancer_level($talent->id,'talent') ?? '' !!}
+                                                    </div>
+                                                @endif
+                                            @endif
+                                        </div>
+                                        <x-status.user-active-inactive-check :userID="$talent->id" />
+                                        <h4 class="single-freelancer-author-name mt-2">
+                                            <a href="{{ route('freelancer.profile.details', $talent->username) }}">
+                                                {{ $talent->full_name }}
+                                                @if($talent->user_verified_status == 1) <i class="fas fa-circle-check"></i>@endif
+                                            </a>
+                                        </h4>
+                                        <span class="single-freelancer-author-para mt-2">
+                                            {{ $talent?->user_introduction?->title ?? '' }}
+                                        </span>
+                                        {!! freelancer_rating_for_profile_details_page($talent->id) !!}
+                                    </div>
+                                    <div class="single-freelancer-bottom">
+                                        <div class="btn-wrapper">
+                                            <a href="{{ route('freelancer.profile.details', $talent->username) }}" class="cmn-btn btn-bg-gray btn-small w-100 radius-5"> {{ __('View Profile') }} </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+<x-pagination.laravel-paginate :allData="$talents" />
